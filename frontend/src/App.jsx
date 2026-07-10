@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 function MetricCard({ title, value }) {
     return (
         <article className="rounded-xl border border-white/10 bg-slate-800/30 p-4 shadow-xl shadow-black/10 backdrop-blur-2xl transition hover:-translate-y-0.5 hover:border-cyan-300/20 hover:bg-slate-800/45">
@@ -58,7 +60,6 @@ function CodeEditor({ label, subtitle, value, onChange, accent }) {
     );
 }
 
-
 function App() {
     const [codeA, setCodeA] = useState("");
     const [codeB, setCodeB] = useState("");
@@ -79,7 +80,7 @@ function App() {
         setLoading(true);
 
         try {
-            const response = await fetch("/compare", {
+            const response = await fetch(`${API_URL}/compare`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

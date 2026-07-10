@@ -1,0 +1,16 @@
+{
+  "name": "CppPlagsCheck",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "check": "node src/run.js",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.7"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

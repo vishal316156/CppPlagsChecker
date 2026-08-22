@@ -196,25 +196,20 @@ function App() {
                             n-gram matching, and Winnowing fingerprints.
                         </p>
 
+                        <p className="mt-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-6 text-amber-800">
+    <strong>Note:</strong> The C++ plagiarism checker may sometimes flag code as potentially similar even when the code is not actually copied or closely related, especially when the submitted code is <strong>very short</strong>. Short programs contain fewer tokens and structural patterns, so coincidental similarities can have a larger impact on the similarity score. Treat such flags as indicators for review, not definitive proof of plagiarism.
+</p>
+
                     </div>
 
                 </section>
                 <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
 
                     <CodeEditor
-                        label="A"
-                        subtitle="First submission"
-                        value={codeA}
-                        onChange={setCodeA}
-                        accent="blue"
+                        label="A" subtitle="First submission" value={codeA} onChange={setCodeA} accent="blue"
                     />
 
-                    <CodeEditor
-                        label="B"
-                        subtitle="Second submission"
-                        value={codeB}
-                        onChange={setCodeB}
-                        accent="cyan"
+                    <CodeEditor label="B" subtitle="Second submission" value={codeB} onChange={setCodeB} accent="cyan"
                     />
 
                 </section>

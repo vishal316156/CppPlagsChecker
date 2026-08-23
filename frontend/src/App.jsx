@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -8,7 +8,6 @@ function MetricCard({ title, value }) {
             <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
                 {title}
             </p>
-
             <p className="mt-2 text-xl font-semibold text-slate-100">
                 {(Number(value ?? 0)*100).toFixed(1)}%
             </p>
@@ -18,9 +17,7 @@ function MetricCard({ title, value }) {
 
 function CodeEditor({ label, subtitle, value, onChange, accent }) {
     const focusColor =
-        accent === "cyan"
-            ? "focus:ring-cyan-400/20"
-            : "focus:ring-blue-400/20";
+        accent === "cyan" ? "focus:ring-cyan-400/20" : "focus:ring-blue-400/20";
 
     return (
         <article className="overflow-hidden rounded-2xl border border-white/10 bg-[#050914] shadow-xl shadow-black/20 transition duration-300 hover:border-blue-300/20">
@@ -36,7 +33,6 @@ function CodeEditor({ label, subtitle, value, onChange, accent }) {
                         <h3 className="text-sm font-medium text-slate-100 sm:text-base">
                             Source Code {label}
                         </h3>
-
                         <p className="text-xs text-slate-400">
                             {subtitle}
                         </p>
@@ -50,11 +46,7 @@ function CodeEditor({ label, subtitle, value, onChange, accent }) {
             </div>
 
             <textarea
-                value={value}
-                onChange={(event) => onChange(event.target.value)}
-                spellCheck={false}
-                placeholder={`// Paste C++ code ${label} here...`}
-                className={`block h-[300px] w-full resize-y bg-transparent p-4 font-mono text-xs leading-6 text-slate-200 caret-cyan-400 outline-none placeholder:text-slate-600 focus:ring-1 focus:ring-inset ${focusColor} sm:h-[380px] sm:text-sm lg:h-[430px]`}
+                value={value} onChange={(event) => onChange(event.target.value)} spellCheck={false} placeholder={`// Paste C++ code ${label} here...`} className={`block h-[300px] w-full resize-y bg-transparent p-4 font-mono text-xs leading-6 text-slate-200 caret-cyan-400 outline-none placeholder:text-slate-600 focus:ring-1 focus:ring-inset ${focusColor} sm:h-[380px] sm:text-sm lg:h-[430px]`}
             />
         </article>
     );
@@ -67,6 +59,10 @@ function App() {
     const [result, setResult] = useState(null);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+
+    const [benchmarkResult, setBenchmarkResult] = useState(null);
+    const [benchmarkLoading, setBenchmarkLoading] = useState(false);
+    const [selectedBenchmark, setSelectedBenchmark] = useState(null);
 
     async function compareCodes() {
         setError("");
@@ -111,7 +107,42 @@ function App() {
             setLoading(false);
         }
     }
+async function runBenchmark() {
+    console.log("BENCHMARK BUTTON CLICKED");
 
+    setError("");
+    setBenchmarkLoading(true);
+
+    try {
+        const response = await fetch(`${API_URL}/benchmark`);
+
+        console.log("BENCHMARK RESPONSE:", response.status);
+
+        const data = await response.json();
+
+        console.log("BENCHMARK DATA:", data);
+
+        if (!response.ok) {
+            throw new Error(
+                data.error || "Benchmark failed."
+            );
+        }
+
+        setBenchmarkResult(data);
+
+    } catch (requestError) {
+        console.error("BENCHMARK ERROR:", requestError);
+
+        setBenchmarkResult(null);
+        setError(
+            requestError.message ||
+            "Unable to connect to the benchmark server."
+        );
+
+    } finally {
+        setBenchmarkLoading(false);
+    }
+}
     const score = Number(result?.similarityScore ?? 0);
     const diagnostics = result?.diagnostics;
 
@@ -149,7 +180,7 @@ function App() {
 
                         <div>
                             <h1 className="text-lg font-semibold tracking-tight text-white sm:text-xl">
-                                PlagCheck
+                                PlagsChecker
                             </h1>
 
                             <p className="mt-0.5 text-xs text-slate-400 sm:text-sm">
@@ -160,17 +191,8 @@ function App() {
 
                     <div className="flex items-center gap-2">
 
-                        <div className="hidden items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/[0.07] px-3 py-2 sm:flex">
-
-                            <span className="relative flex h-2 w-2">
-                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40" />
-                                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-                            </span>
+                        <div className="hidden items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/[0.07] px-3 py-2 sm:flex">                        
                             C++ Only
-
-                            <span className="text-xs font-medium text-emerald-300 sm:text-sm">
-                                Engine Ready
-                            </span>
 
                         </div>
                     </div>
@@ -196,13 +218,215 @@ function App() {
                             n-gram matching, and Winnowing fingerprints.
                         </p>
 
-                        <p className="mt-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-6 text-amber-800">
-    <strong>Note:</strong> The C++ plagiarism checker may sometimes flag code as potentially similar even when the code is not actually copied or closely related, especially when the submitted code is <strong>very short</strong>. Short programs contain fewer tokens and structural patterns, so coincidental similarities can have a larger impact on the similarity score. Treat such flags as indicators for review, not definitive proof of plagiarism.
-</p>
+                    </div>
+                    <div className="mt-6 grid gap-4 md:grid-cols-2">
 
+                    {/* Benchmark */}
+                    <div className="rounded-xl border border-cyan-400/20 bg-cyan-400/5 p-5">
+                        <p className="text-m font-semibold text-slate-100">
+                            Test on predefined cases
+                        </p>
+
+                        <p className="mt-2 text-sm leading-6 text-slate-300">
+                            Don't have two C++ submissions?
+                            Run the built-in benchmark to test the
+                            detector on 10 predefined cases.
+                        </p>
+
+                        <button
+                            type="button"
+                            onClick={runBenchmark}
+                            disabled={benchmarkLoading}
+                            className="rounded-lg border border-cyan-400/30 bg-cyan-400/10 px-5 py-2.5 text-sm font-medium text-cyan-300 transition hover:bg-cyan-400/20 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                            {benchmarkLoading
+                                ? "Running Benchmark..."
+                                : "Run Benchmark"}
+                        </button>
                     </div>
 
+                    
+                    <div className="rounded-xl border border-amber-300/20 bg-amber-300/5 p-5">
+                        <p className="text-m font-semibold text-amber-300">
+                            Important
+                        </p>
+
+                        <p className="mt-2 text-sm leading-6 text-slate-300">
+                            Very short code can produce high similarity
+                            scores by coincidence. Treat flags as a
+                            review signal, not proof of plagiarism.
+                        </p>
+                    </div>
+
+                    
+
+                </div>
+                {benchmarkResult && (
+                    <div className="mt-6 rounded-xl border border-slate-700 bg-slate-900/50 p-6">
+
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-lg font-semibold text-white">
+                                Benchmark Results
+                            </h2>
+
+                            <span className="text-sm text-slate-400">
+                                {benchmarkResult.totalCases} test cases
+                            </span>
+                        </div>
+
+                        {/* Metrics */}
+                        <div className="mt-5 grid grid-cols-2 gap-5 md:grid-cols-4">
+
+                            <div>
+                                <p className="text-sm text-slate-400">
+                                    Precision
+                                </p>
+                                <p className="mt-1 text-2xl font-semibold text-cyan-300">
+                                    {(benchmarkResult.metrics.precision * 100).toFixed(0)}%
+                                </p>
+                            </div>
+
+                            <div>
+                                <p className="text-sm text-slate-400">
+                                    Recall
+                                </p>
+                                <p className="mt-1 text-2xl font-semibold text-cyan-300">
+                                    {(benchmarkResult.metrics.recall * 100).toFixed(0)}%
+                                </p>
+                            </div>
+
+                            <div>
+                                <p className="text-sm text-slate-400">
+                                    F1 Score
+                                </p>
+                                <p className="mt-1 text-2xl font-semibold text-cyan-300">
+                                    {(benchmarkResult.metrics.f1 * 100).toFixed(0)}%
+                                </p>
+                            </div>
+
+                            <div>
+                                <p className="text-sm text-slate-400">
+                                    Cases Passed
+                                </p>
+                                <p className="mt-1 text-2xl font-semibold text-white">
+                                    {
+                                        benchmarkResult.results.filter(
+                                            (test) => test.passed
+                                        ).length
+                                    }/{benchmarkResult.totalCases}
+                                </p>
+                            </div>
+
+                        </div>
+
+                        {/* Test Cases */}
+                        <div className="mt-6 border-t border-slate-700 pt-5">
+
+                            <h3 className="text-sm font-semibold text-slate-300">
+                                Test Cases: Click to see the code
+                            </h3>
+
+                            <div className="mt-3 space-y-2">
+
+                                <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                                {benchmarkResult.results.map((testCase) => (
+                                    <React.Fragment key={testCase.name}>
+                                    <div
+                                        key={testCase.name}
+                                        onClick={() =>
+                                            setSelectedBenchmark(
+                                                selectedBenchmark === testCase.name
+                                                    ? null
+                                                    : testCase.name
+                                            )
+                                        }
+                                        className="cursor-pointer rounded-lg border border-slate-800 bg-slate-950/40 px-4 py-3 transition hover:border-slate-600"
+                                    >
+                                        <div className="flex items-center justify-between gap-3">
+                                            <div className="flex items-center gap-3">
+                                                <span
+                                                    className={
+                                                        testCase.passed
+                                                            ? "text-emerald-400"
+                                                            : "text-red-400"
+                                                    }
+                                                >
+                                                    {testCase.passed ? "✓" : "✕"}
+                                                </span>
+
+                                                <span className="text-sm text-slate-300">
+                                                    {testCase.name}
+                                                </span>
+                                            </div>
+
+                                            <span
+                                                className={
+                                                    testCase.expected === "SHOULD_FLAG"
+                                                        ? "text-xs text-amber-300"
+                                                        : "text-xs text-slate-400"
+                                                }
+                                            >
+                                                {testCase.expected === "SHOULD_FLAG"
+                                                    ? "SHOULD FLAG"
+                                                    : "SHOULD NOT FLAG"}
+                                            </span>
+                                        </div>
+
+                                        <div className="mt-2 ml-7 flex gap-5 text-xs text-slate-500">
+                                            <span>
+                                                N-gram: {(testCase.ngramScore * 100).toFixed(1)}%
+                                            </span>
+
+                                            <span>
+                                                Winnowing: {(testCase.winnowingScore * 100).toFixed(1)}%
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    {selectedBenchmark === testCase.name && (
+                                            <div className="col-span-full grid gap-3 md:grid-cols-2">
+
+                                                {/* Code A */}
+                                                <div className="overflow-hidden rounded-lg border border-slate-800 bg-slate-950">
+                                                    <div className="border-b border-slate-800 px-4 py-2">
+                                                        <span className="text-sm font-medium text-slate-300">
+                                                            Code A
+                                                        </span>
+                                                    </div>
+
+                                                    <pre className="max-h-80 overflow-auto p-4 text-xs leading-5 text-slate-400">
+                                                        <code>{testCase.codeA}</code>
+                                                    </pre>
+                                                </div>
+
+                                                {/* Code B */}
+                                                <div className="overflow-hidden rounded-lg border border-slate-800 bg-slate-950">
+                                                    <div className="border-b border-slate-800 px-4 py-2">
+                                                        <span className="text-sm font-medium text-slate-300">
+                                                            Code B
+                                                        </span>
+                                                    </div>
+
+                                                    <pre className="max-h-80 overflow-auto p-4 text-xs leading-5 text-slate-400">
+                                                        <code>{testCase.codeB}</code>
+                                                    </pre>
+                                                </div>
+
+                                            </div>
+                                        )}
+                                    </React.Fragment>   
+                                ))}
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                )}
+
                 </section>
+
+                
                 <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
 
                     <CodeEditor

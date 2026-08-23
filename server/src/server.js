@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 
 import { checkCppSimilarity } from "./core/checkCppSimilarity.js";
-
+import { runBenchmark } from "./services/benchmark.service.js";
 const app = express();
 
 const PORT = process.env.PORT || 5000;
@@ -45,6 +45,20 @@ app.post("/compare", (req, res) => {
 
         return res.status(500).json({
             error: "Unable to compare the code samples."
+        });
+    }
+});
+app.get("/benchmark", (req, res) => {
+    try {
+        const benchmark = runBenchmark();
+
+        return res.status(200).json(benchmark);
+
+    } catch (error) {
+        console.error("Benchmark failed:", error);
+
+        return res.status(500).json({
+            error: "Failed to run benchmark."
         });
     }
 });

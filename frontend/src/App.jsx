@@ -21,9 +21,7 @@ function CodeEditor({ label, subtitle, value, onChange, accent }) {
 
     return (
         <article className="overflow-hidden rounded-2xl border border-white/10 bg-[#050914] shadow-xl shadow-black/20 transition duration-300 hover:border-blue-300/20">
-
             <div className="flex items-center justify-between border-b border-white/10 bg-slate-800/70 px-4 py-3 backdrop-blur-xl">
-
                 <div className="flex items-center gap-3">
                     <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-slate-700/50 text-sm font-semibold text-slate-200">
                         {label}
@@ -38,13 +36,11 @@ function CodeEditor({ label, subtitle, value, onChange, accent }) {
                         </p>
                     </div>
                 </div>
-
                 <span className="rounded-lg border border-white/10 bg-slate-950/40 px-2.5 py-1 font-mono text-xs text-slate-400">
                     C++
                 </span>
 
             </div>
-
             <textarea
                 value={value} onChange={(event) => onChange(event.target.value)} spellCheck={false} placeholder={`// Paste C++ code ${label} here...`} className={`block h-[300px] w-full resize-y bg-transparent p-4 font-mono text-xs leading-6 text-slate-200 caret-cyan-400 outline-none placeholder:text-slate-600 focus:ring-1 focus:ring-inset ${focusColor} sm:h-[380px] sm:text-sm lg:h-[430px]`}
             />
@@ -66,7 +62,6 @@ function App() {
 
     async function compareCodes() {
         setError("");
-
         if (!codeA.trim() || !codeB.trim()) {
             setResult(null);
             setError("Both C++ code samples are required.");
@@ -74,7 +69,6 @@ function App() {
         }
 
         setLoading(true);
-
         try {
             const response = await fetch(`${API_URL}/compare`, {
                 method: "POST",
@@ -86,7 +80,6 @@ function App() {
                     codeB
                 })
             });
-
             const data = await response.json();
             if (!response.ok) {
                 throw new Error(
@@ -95,14 +88,12 @@ function App() {
             }
 
             setResult(data);
-
         } catch (requestError) {
             setResult(null);
             setError(
                 requestError.message ||
                 "Unable to connect to the comparison server."
             );
-
         } finally {
             setLoading(false);
         }
@@ -115,21 +106,15 @@ async function runBenchmark() {
 
     try {
         const response = await fetch(`${API_URL}/benchmark`);
-
         console.log("BENCHMARK RESPONSE:", response.status);
-
         const data = await response.json();
-
         console.log("BENCHMARK DATA:", data);
-
         if (!response.ok) {
             throw new Error(
                 data.error || "Benchmark failed."
             );
         }
-
         setBenchmarkResult(data);
-
     } catch (requestError) {
         console.error("BENCHMARK ERROR:", requestError);
 
@@ -138,7 +123,6 @@ async function runBenchmark() {
             requestError.message ||
             "Unable to connect to the benchmark server."
         );
-
     } finally {
         setBenchmarkLoading(false);
     }
@@ -159,8 +143,7 @@ async function runBenchmark() {
                 <div
                     className="absolute inset-0 opacity-[0.035]"
                     style={{
-                        backgroundImage:
-                            "linear-gradient(rgba(148,163,184,.45) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,.45) 1px, transparent 1px)",
+                        backgroundImage:"linear-gradient(rgba(148,163,184,.45) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,.45) 1px, transparent 1px)",
                         backgroundSize: "48px 48px"
                     }}
                 />
@@ -188,14 +171,20 @@ async function runBenchmark() {
                             </p>
                         </div>
                     </div>
-
-                    <div className="flex items-center gap-2">
-
-                        <div className="hidden items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/[0.07] px-3 py-2 sm:flex">                        
-                            C++ Only
-
+                    
+                    <div className="flex items-center gap-3">
+                        <a href="/user-manual.html" target="_blank" rel="noopener noreferrer"
+                            className="text-white items-center gap-2 rounded-full border border-cyan-400/30 bg-gradient-to-r from-violet-600 to-cyan-500 hover:scale-105 transition-all duration-300 px-2 py-2 sm:flex">
+                            User Manual
+                        </a>
+        
+                        <div className="flex items-center gap-2">
+                            <div className="hidden items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/[0.07] px-3 py-2 sm:flex">                        
+                                C++ Only
+                            </div>
                         </div>
                     </div>
+                    
                 </nav>
             </header>
 
@@ -204,15 +193,12 @@ async function runBenchmark() {
                     <div className="absolute -right-20 -top-28 h-64 w-64 rounded-full bg-blue-400/10 blur-[90px]" />
 
                     <div className="relative">
-
                         <span className="inline-flex rounded-full border border-blue-300/20 bg-blue-400/[0.07] px-3 py-1 text-xs font-semibold uppercase tracking-wider text-blue-200/80">
                             Source Analysis
                         </span>
-
                         <h2 className="mt-3 text-xl font-semibold tracking-tight text-white sm:text-2xl">
                             Compare C++ submissions of a problem
                         </h2>
-
                         <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">
                             Analyze structural similarity using normalized tokens,
                             n-gram matching, and Winnowing fingerprints.
@@ -221,14 +207,15 @@ async function runBenchmark() {
                     </div>
                     <div className="mt-6 grid gap-4 md:grid-cols-2">
 
-                    {/* Benchmark */}
+
                     <div className="rounded-xl border border-cyan-400/20 bg-cyan-400/5 p-5">
                         <p className="text-m font-semibold text-slate-100">
                             Test on predefined cases
                         </p>
 
                         <p className="mt-2 text-sm leading-6 text-slate-300">
-                            Don't have two C++ submissions?
+                            <span className="font-semibold">Don't </span>
+                            have two C++ submissions?
                             Run the built-in benchmark to test the
                             detector on 10 predefined cases.
                         </p>
@@ -265,47 +252,45 @@ async function runBenchmark() {
                     <div className="mt-6 rounded-xl border border-slate-700 bg-slate-900/50 p-6">
 
                         <div className="flex items-center justify-between">
-                            <h2 className="text-lg font-semibold text-white">
-                                Benchmark Results
+                            <h2 className="text-lg font-semibold text-white/80">
+                                Benchmark Results on predefined testcases
                             </h2>
-
-                            <span className="text-sm text-slate-400">
+                            <span className="text-sm font-semibold text-slate-300/80">
                                 {benchmarkResult.totalCases} test cases
                             </span>
                         </div>
 
-                        {/* Metrics */}
                         <div className="mt-5 grid grid-cols-2 gap-5 md:grid-cols-4">
 
                             <div>
-                                <p className="text-sm text-slate-400">
+                                <p className="text-sm font-semibold text-slate-300/80">
                                     Precision
                                 </p>
                                 <p className="mt-1 text-2xl font-semibold text-cyan-300">
-                                    {(benchmarkResult.metrics.precision * 100).toFixed(0)}%
+                                    ~{(benchmarkResult.metrics.precision * 100).toFixed(0)}%
                                 </p>
                             </div>
 
                             <div>
-                                <p className="text-sm text-slate-400">
+                                <p className="text-sm font-semibold text-slate-300/80">
                                     Recall
                                 </p>
                                 <p className="mt-1 text-2xl font-semibold text-cyan-300">
-                                    {(benchmarkResult.metrics.recall * 100).toFixed(0)}%
+                                    ~{(benchmarkResult.metrics.recall * 100).toFixed(0)}%
                                 </p>
                             </div>
 
                             <div>
-                                <p className="text-sm text-slate-400">
+                                <p className="text-sm font-semibold text-slate-300/80">
                                     F1 Score
                                 </p>
                                 <p className="mt-1 text-2xl font-semibold text-cyan-300">
-                                    {(benchmarkResult.metrics.f1 * 100).toFixed(0)}%
+                                    ~{(benchmarkResult.metrics.f1 * 100).toFixed(0)}%
                                 </p>
                             </div>
 
                             <div>
-                                <p className="text-sm text-slate-400">
+                                <p className="text-sm font-semibold text-slate-300/80">
                                     Cases Passed
                                 </p>
                                 <p className="mt-1 text-2xl font-semibold text-white">
@@ -319,11 +304,9 @@ async function runBenchmark() {
 
                         </div>
 
-                        {/* Test Cases */}
                         <div className="mt-6 border-t border-slate-700 pt-5">
-
-                            <h3 className="text-sm font-semibold text-slate-300">
-                                Test Cases: Click to see the code
+                            <h3 className="w-fit h-fit border rounded-xl border-slate-700 p-2 bg-gradient-to-r from-blue-500/80 to-purple-500/80 text-sm font-semibold text-slate-300">
+                                Click on testcases to view the code
                             </h3>
 
                             <div className="mt-3 space-y-2">
@@ -331,13 +314,10 @@ async function runBenchmark() {
                                 <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                                 {benchmarkResult.results.map((testCase) => (
                                     <React.Fragment key={testCase.name}>
-                                    <div
-                                        key={testCase.name}
+                                    <div key={testCase.name}
                                         onClick={() =>
                                             setSelectedBenchmark(
-                                                selectedBenchmark === testCase.name
-                                                    ? null
-                                                    : testCase.name
+                                                selectedBenchmark === testCase.name ? null : testCase.name
                                             )
                                         }
                                         className="cursor-pointer rounded-lg border border-slate-800 bg-slate-950/40 px-4 py-3 transition hover:border-slate-600"
@@ -345,11 +325,7 @@ async function runBenchmark() {
                                         <div className="flex items-center justify-between gap-3">
                                             <div className="flex items-center gap-3">
                                                 <span
-                                                    className={
-                                                        testCase.passed
-                                                            ? "text-emerald-400"
-                                                            : "text-red-400"
-                                                    }
+                                                    className={ testCase.passed? "text-emerald-400": "text-red-400" }
                                                 >
                                                     {testCase.passed ? "✓" : "✕"}
                                                 </span>
@@ -361,14 +337,10 @@ async function runBenchmark() {
 
                                             <span
                                                 className={
-                                                    testCase.expected === "SHOULD_FLAG"
-                                                        ? "text-xs text-amber-300"
-                                                        : "text-xs text-slate-400"
+                                                    testCase.expected === "SHOULD_FLAG"? "text-xs text-amber-300/90": "text-xs text-green-400/90"
                                                 }
                                             >
-                                                {testCase.expected === "SHOULD_FLAG"
-                                                    ? "SHOULD FLAG"
-                                                    : "SHOULD NOT FLAG"}
+                                                {testCase.expected === "SHOULD_FLAG"? "SHOULD FLAG": "SHOULD NOT FLAG"}
                                             </span>
                                         </div>
 
@@ -376,7 +348,6 @@ async function runBenchmark() {
                                             <span>
                                                 N-gram: {(testCase.ngramScore * 100).toFixed(1)}%
                                             </span>
-
                                             <span>
                                                 Winnowing: {(testCase.winnowingScore * 100).toFixed(1)}%
                                             </span>
@@ -386,7 +357,6 @@ async function runBenchmark() {
                                     {selectedBenchmark === testCase.name && (
                                             <div className="col-span-full grid gap-3 md:grid-cols-2">
 
-                                                {/* Code A */}
                                                 <div className="overflow-hidden rounded-lg border border-slate-800 bg-slate-950">
                                                     <div className="border-b border-slate-800 px-4 py-2">
                                                         <span className="text-sm font-medium text-slate-300">
@@ -399,7 +369,6 @@ async function runBenchmark() {
                                                     </pre>
                                                 </div>
 
-                                                {/* Code B */}
                                                 <div className="overflow-hidden rounded-lg border border-slate-800 bg-slate-950">
                                                     <div className="border-b border-slate-800 px-4 py-2">
                                                         <span className="text-sm font-medium text-slate-300">

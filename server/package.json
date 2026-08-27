@@ -4,7 +4,7 @@
   "type": "module",
   "main": "src/server.js",
   "scripts": {
-    "check": "node src/run.js",
+    "dev": "node src/server.js",
     "test": "vitest run"
   },
   "devDependencies": {

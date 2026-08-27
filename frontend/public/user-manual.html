@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlagCheck — User Manual</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #080d1d;
+      color: #cbd5e1;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.7;
+    }
+    .container {
+      width: min(1000px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 56px 0 80px;
+    }
+    header {
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #1e293b;
+    }
+    .brand {
+      color: #f1f5f9;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+    .subtitle {
+      margin-top: 4px;
+      color: #64748b;
+      font-size: 15px;
+    }
+    h1 {
+      margin: 0 0 10px;
+      color: #f8fafc;
+      font-size: 36px;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+    }
+    h2 {
+      margin: 22px 0 4px;
+      color: #f1f5f9;
+      font-size: 22px;
+    }
+    h3 {
+      color: #e2e8f0;
+      font-size: 16px;
+      margin-top: 14px;
+    }
+    p { margin: 5px 0; }
+    ul, ol { padding-left: 22px; }
+    li { margin: 6px 0; }
+    code {
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: #111827;
+      color: #c4b5fd;
+      font-size: 0.92em;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 18px;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      background: #050914;
+      color: #94a3b8;
+    }
+    .note {
+      margin: 22px 0;
+      padding: 16px 18px;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      background: #0f172a;
+    }
+    .score {
+      margin: 18px 0;
+      padding: 14px 16px;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      background: #0b1224;
+      font-weight: 600;
+    }
+    .muted { color: #64748b; }
+    a { color: #c4b5fd; }
+
+    .flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  background: #050914;
+}
+
+.flow-step {
+  color: #cbd5e1;
+  white-space: nowrap;
+}
+
+.flow-arrow {
+  color: #475569;
+}
+@media (max-width: 600px) {
+  .flow {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .flow-arrow {
+    display: none;
+  }
+
+  .flow-step {
+    padding: 5px 8px;
+    border: 1px solid #1e293b;
+    border-radius: 6px;
+    background: #0b1224;
+    white-space: normal;
+  }
+}
+
+
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <div class="brand">PlagCheck</div>
+      <div class="subtitle">C++ similarity analysis</div>
+    </header>
+
+    <h1>User Manual</h1>
+    <p class="muted">
+      A short guide to comparing C++ submissions and testing the similarity engine.
+    </p>
+
+    <h2>1. What is PlagCheck?</h2>
+    <p>
+      PlagCheck compares two <strong>C++ programs</strong> and measures their structural similarity.
+    </p>
+    <ul>
+      <li>Token normalization</li>
+      <li>5-token and 15-token n-grams</li>
+      <li>Jaccard similarity</li>
+      <li>Winnowing fingerprints</li>
+    </ul>
+
+    <div class="note">
+      <strong>Important:</strong> A high similarity score is a review signal, not proof of plagiarism.
+      Very short programs can produce high scores because they contain fewer unique patterns.
+    </div>
+
+    <h2>2. Manual Code Comparison</h2>
+    <ol>
+      <li>Enter the first C++ program in <strong>Code A</strong>.</li>
+      <li>Enter the second program in <strong>Code B</strong>.</li>
+      <li>Click <strong>Compare</strong>.</li>
+      <li>Review the similarity result, N-gram score, and Winnowing score.</li>
+    </ol>
+    <p>For meaningful results, compare programs that solve the <strong>same problem</strong>.</p>
+
+    <h2>3. Run the Benchmark</h2>
+    <p>Don't have two programs available? Use the built-in benchmark.</p>
+    <ol>
+      <li>Click <strong>Run Benchmark</strong>.</li>
+      <li>PlagCheck processes <strong>10 predefined C++ code pairs</strong>.</li>
+      <li>Review Precision, Recall, F1 Score, and Cases Passed.</li>
+      <li>Click any test case to expand it.</li>
+      <li>Inspect Code A, Code B, and their similarity scores.</li>
+    </ol>
+
+    <h2>4. What Does the Benchmark Test?</h2>
+    <p>The benchmark checks common transformations that can make copied code look different:</p>
+    <ul>
+      <li>Variable renaming</li>
+      <li>Literal changes</li>
+      <li>Comment and formatting changes</li>
+      <li>Dead-code insertion</li>
+      <li>Statement reordering</li>
+      <li><code>for</code> → <code>while</code> rewriting</li>
+    </ul>
+    <p>
+      It also contains unrelated programs to check whether the detector incorrectly flags different algorithms.
+    </p>
+
+    <h2>5. Understanding the Scores</h2>
+    <h3>N-gram Similarity</h3>
+    <p>Measures overlap between sequences of normalized code tokens.</p>
+
+    <h3>Winnowing Similarity</h3>
+    <p>Compares fingerprints selected from the token sequence.</p>
+
+    <div class="score">
+      0% ───────────────────────── 100%<br />
+      <span class="muted">Low similarity　　　　　　　　 High similarity</span>
+    </div>
+
+    <h2>6. Manual Testing</h2>
+<p>Modify one aspect of a program at a time:</p>
+
+<div class="flow">
+  <span class="flow-step">Original Code</span>
+  <span class="flow-arrow">→</span>
+
+  <span class="flow-step">Rename variables</span>
+  <span class="flow-arrow">→</span>
+
+  <span class="flow-step">Change literals</span>
+  <span class="flow-arrow">→</span>
+
+  <span class="flow-step">Add/change comments</span>
+  <span class="flow-arrow">→</span>
+
+  <span class="flow-step">Reorder statements</span>
+  <span class="flow-arrow">→</span>
+
+  <span class="flow-step">Rewrite a loop</span>
+  <span class="flow-arrow">→</span>
+
+  <span class="flow-step">Compare with original</span>
+</div>
+
+    <h2>7. Important Limitation</h2>
+    <div className="w-full overflow-visible rounded-lg border border-slate-800 bg-slate-950/50 p-4">
+    <div className="flex w-full flex-wrap items-center gap-x-2 gap-y-3 text-sm">
+        <span className="whitespace-nowrap text-slate-300">
+            Original Code
+        </span>
+
+        <span className="text-slate-600">→</span>
+
+        <span className="whitespace-nowrap text-slate-300">
+            Rename variables
+        </span>
+
+        <span className="text-slate-600">→</span>
+
+        <span className="whitespace-nowrap text-slate-300">
+            Change literals
+        </span>
+
+        <span className="text-slate-600">→</span>
+
+        <span className="whitespace-nowrap text-slate-300">
+            Add/change comments
+        </span>
+
+        <span className="text-slate-600">→</span>
+
+        <span className="whitespace-nowrap text-slate-300">
+            Reorder statements
+        </span>
+
+        <span className="text-slate-600">→</span>
+
+        <span className="whitespace-nowrap text-slate-300">
+            Rewrite a loop
+        </span>
+
+        <span className="text-slate-600">→</span>
+
+        <span className="whitespace-nowrap text-slate-300">
+            Compare with original
+        </span>
+    </div>
+</div>
+    <p>A high score can occur because:</p>
+    <ul>
+      <li>Programs use common programming patterns.</li>
+      <li>Both solutions implement the same standard algorithm.</li>
+      <li>The submitted programs are very short.</li>
+    </ul>
+    <p>
+      Treat flagged results as <strong>indicators for further review</strong>, not a final verdict.
+    </p>
+  </main>
+</body>
+</html>

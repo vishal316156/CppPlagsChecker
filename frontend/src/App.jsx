@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-function MetricCard({ title, value }) {
+function CardBox({ title, value }) {
     return (
         <article className="rounded-xl border border-white/10 bg-slate-800/30 p-4 shadow-xl shadow-black/10 backdrop-blur-2xl transition hover:-translate-y-0.5 hover:border-cyan-300/20 hover:bg-slate-800/45">
             <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
@@ -503,27 +503,27 @@ async function runBenchmark() {
 
                         <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
 
-                            <MetricCard
+                            <CardBox
                                 title="N-Gram"
                                 value={diagnostics.ngramScore}
                             />
 
-                            <MetricCard
+                            <CardBox
                                 title="Short"
                                 value={diagnostics.shortScore}
                             />
 
-                            <MetricCard
+                            <CardBox
                                 title="Long"
                                 value={diagnostics.longScore}
                             />
 
-                            <MetricCard
+                            <CardBox
                                 title="Winnowing"
                                 value={diagnostics.winnowingScore}
                             />
 
-                            <MetricCard
+                            <CardBox
                                 title="Threshold"
                                 value={diagnostics.threshold}
                             />

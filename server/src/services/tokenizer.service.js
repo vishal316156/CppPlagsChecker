@@ -1,8 +1,4 @@
-import {
-  CPP_KEYWORDS,
-  MULTI_CHAR_OPERATORS,
-  SINGLE_CHAR_OPERATORS
-} from "../constants/cpp.constants.js";
+import { CPP_KEYWORDS, MULTI_CHAR_OPERATORS, SINGLE_CHAR_OPERATORS } from "../constants/cpp.constants.js";
 
 function isWhitespace(char) {
   return /\s/.test(char);
@@ -42,19 +38,10 @@ function readQuotedLiteral(code, startIndex, quote) {
 function readNumber(code, startIndex) {
   let i = startIndex;
 
-  while (
-    i < code.length &&
-    /[A-Za-z0-9_.'+-]/.test(code[i])
-  ) {
+  while ( i < code.length && /[A-Za-z0-9_.'+-]/.test(code[i])) {
     if (
-      (code[i] === "+" || code[i] === "-") &&
-      code[i - 1] !== "e" &&
-      code[i - 1] !== "E" &&
-      code[i - 1] !== "p" &&
-      code[i - 1] !== "P"
-    ) {
-      break;
-    }
+      (code[i] === "+" || code[i] === "-") && code[i - 1] !== "e" 
+      && code[i - 1] !== "E" && code[i - 1] !== "p" && code[i - 1] !== "P") break;
 
     i++;
   }
@@ -107,7 +94,6 @@ export function tokenizeCpp(code) {
             break;
           }
         }
-
         i++;
       }
       continue;
@@ -115,20 +101,16 @@ export function tokenizeCpp(code) {
 
     atLineStart = false;
 
-    // Single-line comment handelling
     if (code.startsWith("//", i)) {
       i += 2;
-
       while (i < code.length && code[i] !== "\n") {
         i++;
       }
-
       continue;
     }
-    // Multi-line comment
+
     if (code.startsWith("/*", i)) {
       const closingIndex = code.indexOf("*/", i + 2);
-
       if (closingIndex === -1) {
         throw new Error("Unterminated block comment");
       }
@@ -136,7 +118,6 @@ export function tokenizeCpp(code) {
       continue;
     }
 
-    // String literal
     if (char === '"') {
       i = readQuotedLiteral(code, i, '"');
 
@@ -144,10 +125,9 @@ export function tokenizeCpp(code) {
         type: "STRING_LITERAL",
         value: "STRING_LITERAL"
       });
-
       continue;
     }
-    // Character literal
+
     if (char === "'") {
       i = readQuotedLiteral(code, i, "'");
 
@@ -155,13 +135,11 @@ export function tokenizeCpp(code) {
         type: "CHAR_LITERAL",
         value: "CHAR_LITERAL"
       });
-
       continue;
     }
-    // Identifier or keyword
+
     if (isIdentifierStart(char)) {
       const start = i;
-
       i++;
 
       while (i < code.length && isIdentifierPart(code[i])) {
@@ -172,18 +150,15 @@ export function tokenizeCpp(code) {
         type: CPP_KEYWORDS.has(value) ? "KEYWORD" : "IDENTIFIER",
         value
       });
-
       continue;
     }
-    // Number literal
+
     if (
       isDigit(char) ||
       (char === "." && isDigit(code[i + 1] ?? ""))
     ) {
       const start = i;
-
       i = readNumber(code, i);
-
       tokens.push({
         type: "NUMBER_LITERAL",
         value: code.slice(start, i)
@@ -213,7 +188,6 @@ export function tokenizeCpp(code) {
       i++;
       continue;
     }
-
     throw new Error(`Unsupported C++ token near index ${i}`);
   }
   return tokens;

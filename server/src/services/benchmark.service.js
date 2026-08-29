@@ -361,9 +361,7 @@ export function runBenchmark() {
         ? "SHOULD_FLAG"
         : "SHOULD_NOT_FLAG",
 
-      passed:
-        (pair.label === "SHOULD_FLAG" && predictedFlag) ||
-        (pair.label === "SHOULD_NOT_FLAG" && !predictedFlag),
+      passed: (pair.label === "SHOULD_FLAG" && predictedFlag) ||(pair.label === "SHOULD_NOT_FLAG" && !predictedFlag),
 
       ngramScore: scores.ngramScore,
       winnowingScore: scores.winnowingScore,

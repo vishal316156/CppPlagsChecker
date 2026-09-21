@@ -430,7 +430,7 @@ VITE_API_URL
 
 ---
 
-##Tech Stack
+## Tech Stack
 
 ### Frontend
 

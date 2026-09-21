@@ -64,7 +64,7 @@ FLAGGED / NOT FLAGGED
 
 ---
 
-##How the Engine Works
+## How the Engine Works
 
 ### 1. Tokenization
 The tokenizer converts C++ source code into a sequence of meaningful tokens.

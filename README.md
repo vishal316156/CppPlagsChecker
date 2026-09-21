@@ -1,4 +1,4 @@
-# 🔍 CppPlagsChecker
+#CppPlagsChecker
 
 A C++ code similarity analysis tool that compares two submissions and highlights suspicious structural similarity.
 
@@ -8,7 +8,7 @@ Instead of comparing raw text, the engine processes source code through tokeniza
 
 ---
 
-## 🚀 Live Demo
+##Live Demo
 
 🔗 **Frontend:** https://cpp-plags-checker-git-main-vishal-fullstack-dev.vercel.app/
 <!-- 
@@ -16,7 +16,7 @@ Instead of comparing raw text, the engine processes source code through tokeniza
 
 ---
 
-## 🧠 Why I Built This
+##Why I Built This
 
 Two C++ programs can be logically identical while looking completely different.
 
@@ -46,7 +46,7 @@ FLAGGED / NOT FLAGGED
 
 ---
 
-## ✨ Features
+##Features
 
 - Compare two C++ submissions.
 - Ignore comments and formatting differences.
@@ -64,7 +64,7 @@ FLAGGED / NOT FLAGGED
 
 ---
 
-## ⚙️ How the Engine Works
+##How the Engine Works
 
 ### 1. Tokenization
 The tokenizer converts C++ source code into a sequence of meaningful tokens.
@@ -185,7 +185,7 @@ The threshold is an experimental project configuration and should not be treated
 
 ---
 
-## 📊 Result Metrics
+##Result Metrics
 
 | Metric | Meaning |
 |---|---|
@@ -198,7 +198,7 @@ The threshold is an experimental project configuration and should not be treated
 
 ---
 
-## 🏗️ Project Structure
+##Project Structure
 
 ```text
 CppPlagsChecker/
@@ -243,7 +243,7 @@ CppPlagsChecker/
 
 ---
 
-## 🧩 Folder Responsibilities
+##Folder Responsibilities
 
 ### `frontend/`
 
@@ -281,7 +281,7 @@ The tests verify individual algorithms, complete engine behavior, known transfor
 
 ---
 
-## 🔌 API
+##API
 
 ### `POST /compare`
 
@@ -314,7 +314,7 @@ Compares two C++ code samples.
 
 ---
 
-## 🧪 Testing
+##Testing
 
 The project includes automated tests for:
 
@@ -359,7 +359,7 @@ The benchmark is intentionally small and is used for development validation, not
 
 ---
 
-## 💻 Local Setup
+##Local Setup
 
 ### Clone the Repository
 
@@ -402,7 +402,7 @@ http://localhost:5000
 
 ---
 
-## 🚀 Deployment
+##Deployment
 
 The application is deployed as two independent services.
 
@@ -430,7 +430,7 @@ VITE_API_URL
 
 ---
 
-## 🛠️ Tech Stack
+##Tech Stack
 
 ### Frontend
 
@@ -465,7 +465,7 @@ VITE_API_URL
 
 ---
 
-## ⚠️ Scope and Limitations
+##Scope and Limitations
 
 CppPlagsChecker measures **source-code similarity**.
 
@@ -484,7 +484,7 @@ The project is primarily designed for comparing C++ submissions written for the 
 
 ---
 
-## 🔮 Possible Improvements
+##Possible Improvements
 
 - Larger benchmark dataset.
 - Threshold calibration using more labeled submissions.
@@ -496,6 +496,6 @@ The project is primarily designed for comparing C++ submissions written for the 
 
 ---
 
-## 👤 Author
+##Author
 
 Built as a learning project focused on source-code analysis, similarity algorithms, backend architecture, testing, and deployment.

@@ -243,7 +243,7 @@ CppPlagsChecker/
 
 ---
 
-##Folder Responsibilities
+## Folder Responsibilities
 
 ### `frontend/`
 

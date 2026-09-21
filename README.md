@@ -281,7 +281,7 @@ The tests verify individual algorithms, complete engine behavior, known transfor
 
 ---
 
-##API
+## API
 
 ### `POST /compare`
 
@@ -359,7 +359,7 @@ The benchmark is intentionally small and is used for development validation, not
 
 ---
 
-##Local Setup
+## Local Setup
 
 ### Clone the Repository
 
@@ -402,7 +402,7 @@ http://localhost:5000
 
 ---
 
-##Deployment
+## Deployment
 
 The application is deployed as two independent services.
 
